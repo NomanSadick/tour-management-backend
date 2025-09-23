@@ -2,12 +2,10 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import { UserService } from "./user.service";
-import AppError from "../../errorHelpers/AppError";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import { verifyToken } from "../../utils/jwt";
-import { envVars } from "../../config/env";
-import type { JwtPayload } from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken"; 
+
 
 // const createUser = async (req: Request, res: Response, next: NextFunction) => {
 //   try {
@@ -47,7 +45,7 @@ const updateUser = catchAsync(
 
     const verifiedToken = req.user;
     const payload = req.body;
-    const user = await UserService.updateUser(userId, payload, verifiedToken);
+    const user = await UserService.updateUser(userId, payload, verifiedToken as JwtPayload);
 
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
