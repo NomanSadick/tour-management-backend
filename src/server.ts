@@ -30,8 +30,10 @@ const startServer = async () => {
   await seedSuperAdmin();
 })();
 
+// SIGTERM: handle termination signal from OS or container orchestration tools like Kubernetes
+
 process.on("SIGTERM", () => {
-  console.log("SIGTERM signal recieved... Server shutting down..");
+  console.log("SIGTERM signal received... Server shutting down..");
 
   if (server) {
     server.close(() => {
@@ -42,8 +44,9 @@ process.on("SIGTERM", () => {
   process.exit(1);
 });
 
+// SIGINT: handle ctrl+c event in terminal to stop the server
 process.on("SIGINT", () => {
-  console.log("SIGINT signal recieved... Server shutting down..");
+  console.log("SIGINT signal received... Server shutting down..");
 
   if (server) {
     server.close(() => {
@@ -53,9 +56,11 @@ process.on("SIGINT", () => {
 
   process.exit(1);
 });
+
+// unhandledRejection: handle errors in async code that are not caught by any try-catch block
 
 process.on("unhandledRejection", (err) => {
-  console.log("Unhandled Rejecttion detected... Server shutting down..", err);
+  console.log("Unhandled Rejection detected... Server shutting down..", err);
 
   if (server) {
     server.close(() => {
@@ -66,6 +71,8 @@ process.on("unhandledRejection", (err) => {
   process.exit(1);
 });
 
+
+// uncaughtException: handle errors that are not caught by any try-catch block
 process.on("uncaughtException", (err) => {
   console.log("Uncaught Exception detected... Server shutting down..", err);
 
